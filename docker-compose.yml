@@ -1,0 +1,40 @@
+version: '3'
+services:
+  php:
+    build: ./php/
+    volumes:
+      - ./api/:/var/www/html
+      - ./php/log/php_log:/var/log/php_log:rw
+    links:
+      - postgres
+      - redis
+    restart: always
+  vue:
+    build: ./vue/
+    volumes:
+      -
+  postgres:
+    build: ./postgres/
+    environment:
+      - POSTGRES_PASSWORD=fahuHU90HJUsdif676HUHUfafalhdfauzerqrfa
+      - POSTGRES_USER=test-postgres
+      - POSTGRES_DB=test
+    ports:
+      - 5133:5432
+    restart: always
+  nginx:
+    build: ./nginx/
+    volumes:
+      - ./nginx/log:/var/log/nginx:rw
+      - ./ocm-web:/var/www/html
+    links:
+      - php:php
+      - vue:vue
+    ports:
+      - 8889:80
+    restart: always
+  redis:
+    build: ./redis/
+    ports:
+      - 5169:6379
+    restart: always
