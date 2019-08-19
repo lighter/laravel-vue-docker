@@ -28,7 +28,7 @@ RUN apt-get update \
     && docker-php-ext-enable mcrypt \
 
     # redis
-    && pecl install -o -f redis \
+    && pecl install -o -f redis-5.0.2 \
     && docker-php-ext-enable redis\
 
     # pgsql
