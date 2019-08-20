@@ -9,10 +9,14 @@ services:
       - postgres
       - redis
     restart: always
-  vue:
-    build: ./vue/
+  front-end:
+    build: ./front-end/
     volumes:
-      -
+      - ./front-end/dist:/var/www/html
+    links:
+      - nginx
+    ports:
+      - 10000:80
   postgres:
     build: ./postgres/
     environment:
@@ -20,7 +24,7 @@ services:
       - POSTGRES_USER=test-postgres
       - POSTGRES_DB=test
     ports:
-      - 5133:5432
+      - 10001:5432
     restart: always
   nginx:
     build: ./nginx/
@@ -29,12 +33,11 @@ services:
       - ./ocm-web:/var/www/html
     links:
       - php:php
-      - vue:vue
     ports:
-      - 8889:80
+      - 10002:80
     restart: always
   redis:
     build: ./redis/
     ports:
-      - 5169:6379
+      - 10003:6379
     restart: always
